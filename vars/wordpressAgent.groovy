@@ -1,5 +1,3 @@
-def call() {
-    steps {
-        echo 'this is for test!'
-    }
+def call(String theName = "Hamid") {
+    echo "theName is: ${theName}"
 }
