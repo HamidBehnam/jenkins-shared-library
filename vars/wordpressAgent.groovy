@@ -1,3 +1,7 @@
-def call(String theName = "Hamid") {
-    echo "the parameter is: ${theName}";
+def call() {
+    stage('shared lib test') {
+        steps {
+            echo 'this is for test!'
+        }
+    }
 }
