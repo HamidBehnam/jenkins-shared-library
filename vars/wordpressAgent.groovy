@@ -1,3 +1,3 @@
-def call(String theName) {
-    return "the parameter is: " + theName;
+def call(String theName = "Hamid") {
+    echo "the parameter is: ${theName}";
 }
