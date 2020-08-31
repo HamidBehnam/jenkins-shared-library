@@ -1,4 +1,4 @@
-def call() {
+def call(Map pipelineParams) {
 
     pipeline {
         agent {
@@ -13,6 +13,7 @@ def call() {
                     stage('Print Info') {
                         steps {
                             sh '''
+            echo pipelineParams.dest_repo
             node --version
             ls'''
                         }
