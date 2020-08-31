@@ -13,7 +13,7 @@ def call(Map pipelineParams) {
                     stage('Print Info') {
                         steps {
                             sh '''
-            echo pipelineParams.dest_repo
+            echo ${pipelineParams.dest_repo}
             node --version
             ls'''
                         }
