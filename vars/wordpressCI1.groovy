@@ -1,4 +1,9 @@
-def call(Map pipelineParams) {
+def call(body) {
+    // evaluate the body block, and collect configuration into the object
+    def pipelineParams= [:]
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = pipelineParams
+    body()
 
     pipeline {
         agent {
@@ -13,7 +18,6 @@ def call(Map pipelineParams) {
                     stage('Print Info') {
                         steps {
                             sh '''
-            echo ${pipelineParams.dest_repo}
             node --version
             ls'''
                         }
@@ -114,13 +118,13 @@ def call(Map pipelineParams) {
             DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v1_id')
-            SRC_PROJECT_NAME = 'hamidev-wordpress-100'
-            DEST_PROJECT_NAME = 'hamidev-wordpress-100-dest'
-            DEST_REPO = 'github.com/HamidBehnam/hamidev-wordpress-100-dest.git'
-            WORDPRESS_REPO = 'github.com/HamidBehnam/hamidev-wordpress-100.git'
-            PROJECT_CATEGORY = 'wordpress'
-            PROJECT_PATH = '100'
-            THEME_NAME = 'hamidev-wordpress-100'
+            SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
+            DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
+            DEST_REPO = "${pipelineParams.dest_repo}"
+            WORDPRESS_REPO = "${pipelineParams.wordpress_repo}"
+            PROJECT_CATEGORY = "${pipelineParams.project_category}"
+            PROJECT_PATH = "${pipelineParams.project_path}"
+            THEME_NAME = "${pipelineParams.theme_name}"
         }
     }
 }
