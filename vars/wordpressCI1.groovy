@@ -18,18 +18,18 @@ def call(body) {
                     stage('Print Info') {
                         steps {
                             sh '''
-            node --version
-            ls'''
+                            node --version
+                            ls'''
                         }
                     }
 
                     stage('Clearing') {
                         steps {
                             sh '''
-            cd themes/${THEME_NAME}/resources
-            rm -rf node_modules
-            rm -rf ${DEST_PROJECT_NAME}
-            rm -rf dist'''
+                            cd themes/${THEME_NAME}/resources
+                            rm -rf node_modules
+                            rm -rf ${DEST_PROJECT_NAME}
+                            rm -rf dist'''
                         }
                     }
                 }
@@ -38,21 +38,21 @@ def call(body) {
             stage('Dependencies Installation') {
                 steps {
                     sh '''
-        cd themes/${THEME_NAME}/resources
-        npm install'''
+                    cd themes/${THEME_NAME}/resources
+                    npm install'''
                 }
             }
 
             stage('Build') {
                 steps {
                     sh '''
-        cd themes/${THEME_NAME}/resources
-        if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
-        then
-        npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/
-        else
-        npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/ --env.mode=development --env.devtool=inline-source-map
-        fi'''
+                    cd themes/${THEME_NAME}/resources
+                    if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
+                    then
+                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    else
+                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/ --env.mode=development --env.devtool=inline-source-map
+                    fi'''
                 }
             }
 
@@ -66,17 +66,17 @@ def call(body) {
                 }
                 steps {
                     sh '''
-        cd themes/${THEME_NAME}/resources
-        ls
-        #make sure the repository does have the related branch. you might need to manually create all the branches needed for the jenkins like dev, qa.
-        git clone --single-branch --branch ${BRANCH_NAME} https://${DEST_REPO}
-        cp -a dist/. ${DEST_PROJECT_NAME}/
-        cd ${DEST_PROJECT_NAME}
-        git config user.name "${GITHUB_CRED_USR}"
-        git config user.email "${GITHUB_USER_EMAIL}"
-        git add .
-        git diff --quiet && git diff --staged --quiet || git commit -am "adding the build files to the dest repo"
-        git push https://${GITHUB_CRED_USR}:${GITHUB_CRED_PSW}@${DEST_REPO}'''
+                    cd themes/${THEME_NAME}/resources
+                    ls
+                    #make sure the repository does have the related branch. you might need to manually create all the branches needed for the jenkins like dev, qa.
+                    git clone --single-branch --branch ${BRANCH_NAME} https://${DEST_REPO}
+                    cp -a dist/. ${DEST_PROJECT_NAME}/
+                    cd ${DEST_PROJECT_NAME}
+                    git config user.name "${GITHUB_CRED_USR}"
+                    git config user.email "${GITHUB_USER_EMAIL}"
+                    git add .
+                    git diff --quiet && git diff --staged --quiet || git commit -am "adding the build files to the dest repo"
+                    git push https://${GITHUB_CRED_USR}:${GITHUB_CRED_PSW}@${DEST_REPO}'''
                 }
             }
 
@@ -95,14 +95,14 @@ def call(body) {
                               jobId: "${RUNDECK_JOB_ID}",
                               rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
                               options: """
-          domain_name=${DOMAIN_NAME}
-          project_category=${PROJECT_CATEGORY}
-          project_path=${PROJECT_PATH}
-          deployment_branch=${BRANCH_NAME}
-          wordpress_repo=${WORDPRESS_REPO}
-          dest_repo=${DEST_REPO}
-          theme_name=${THEME_NAME}
-          """,
+                                  domain_name=${DOMAIN_NAME}
+                                  project_category=${PROJECT_CATEGORY}
+                                  project_path=${PROJECT_PATH}
+                                  deployment_branch=${BRANCH_NAME}
+                                  wordpress_repo=${WORDPRESS_REPO}
+                                  dest_repo=${DEST_REPO}
+                                  theme_name=${THEME_NAME}
+                                  """,
                               shouldFailTheBuild: true,
                               shouldWaitForRundeckJob: true,
                               tailLog: true])
@@ -110,6 +110,11 @@ def call(body) {
                 }
             }
 
+            stage('Post Build') {
+                steps {
+                    cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true, cleanupMatrixParent: true)
+                }
+            }
         }
         environment {
             HOME = '.'

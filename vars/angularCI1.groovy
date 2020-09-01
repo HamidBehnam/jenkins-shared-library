@@ -43,12 +43,13 @@ def call(body) {
 
             stage('Build') {
                 steps {
-                    sh '''if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
-              then
-              npm run build -- --prod --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
-              else
-              npm run build -- --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
-              fi'''
+                    sh '''
+                    if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
+                    then
+                    npm run build -- --prod --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    else
+                    npm run build -- --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    fi'''
                 }
             }
 
