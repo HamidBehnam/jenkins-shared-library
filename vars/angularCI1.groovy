@@ -46,9 +46,9 @@ def call(body) {
                     sh '''
                     if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
                     then
-                    npm run build -- --prod --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    npm run build -- --prod --base-href /${PROJECT_PATH}
                     else
-                    npm run build -- --base-href /${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    npm run build -- --base-href /${PROJECT_PATH}
                     fi'''
                 }
             }
@@ -93,7 +93,6 @@ def call(body) {
                               jobId: "${RUNDECK_JOB_ID}",
                               rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
                               options: """
-                                  project_category=${PROJECT_CATEGORY}
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
                                   dest_repo=${DEST_REPO}
@@ -122,7 +121,6 @@ def call(body) {
             SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
             DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
             DEST_REPO = "${pipelineParams.dest_repo}"
-            PROJECT_CATEGORY = "${pipelineParams.project_category}"
             PROJECT_PATH = "${pipelineParams.project_path}"
         }
     }
