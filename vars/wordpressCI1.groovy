@@ -49,9 +49,9 @@ def call(body) {
                     cd themes/${THEME_NAME}/resources
                     if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "qa" ]
                     then
-                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/
+                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_PATH}
                     else
-                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_CATEGORY}/${PROJECT_PATH}/ --env.mode=development --env.devtool=inline-source-map
+                    npm run build:dev:progress -- --env.publicPath=/${PROJECT_PATH} --env.mode=development --env.devtool=inline-source-map
                     fi'''
                 }
             }
@@ -95,11 +95,11 @@ def call(body) {
                               jobId: "${RUNDECK_JOB_ID}",
                               rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
                               options: """
+                                  src_project_name=${SRC_PROJECT_NAME}  
                                   domain_name=${DOMAIN_NAME}
-                                  project_category=${PROJECT_CATEGORY}
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
-                                  wordpress_repo=${WORDPRESS_REPO}
+                                  src_repo=${SRC_REPO}
                                   dest_repo=${DEST_REPO}
                                   theme_name=${THEME_NAME}
                                   mysql_root_pass=${MYSQL_ROOT_PASS}
@@ -128,8 +128,7 @@ def call(body) {
             SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
             DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
             DEST_REPO = "${pipelineParams.dest_repo}"
-            WORDPRESS_REPO = "${pipelineParams.wordpress_repo}"
-            PROJECT_CATEGORY = "${pipelineParams.project_category}"
+            SRC_REPO = "${pipelineParams.src_repo}"
             PROJECT_PATH = "${pipelineParams.project_path}"
             THEME_NAME = "${pipelineParams.theme_name}"
         }
