@@ -95,7 +95,7 @@ def call(body) {
                               jobId: "${RUNDECK_JOB_ID}",
                               rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
                               options: """
-                                  src_project_name=${SRC_PROJECT_NAME}  
+                                  src_project_name=${SRC_PROJECT_NAME}
                                   domain_name=${DOMAIN_NAME}
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
