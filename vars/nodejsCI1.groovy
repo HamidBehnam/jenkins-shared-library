@@ -79,6 +79,35 @@ def call(body) {
                 }
             }
 
+            stage('Deployment') {
+                when {
+                    anyOf {
+                        branch 'dev';
+                        branch 'qa';
+                        branch 'main';
+                        branch 'master';
+                    }
+                }
+                steps {
+                    script {
+                        step([$class: "RundeckNotifier",
+                              includeRundeckLogs: true,
+                              jobId: "${RUNDECK_JOB_ID}",
+                              rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
+                              options: """
+                                  src_project_name=${SRC_PROJECT_NAME}
+                                  project_path=${PROJECT_PATH}
+                                  deployment_branch=${BRANCH_NAME}
+                                  dest_repo=${DEST_REPO}
+                                  domain_name=${DOMAIN_NAME}
+                                  """,
+                              shouldFailTheBuild: true,
+                              shouldWaitForRundeckJob: true,
+                              tailLog: true])
+                    }
+                }
+            }
+
             stage('Post Build') {
                 steps {
                     cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true, cleanupMatrixParent: true)
@@ -91,7 +120,7 @@ def call(body) {
             GITHUB_USER_EMAIL = credentials('github_user_email')
             DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
-            RUNDECK_JOB_ID = credentials('angular_deployment_v1_id')
+            RUNDECK_JOB_ID = credentials('nodejs_deployment_v1_id')
             SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
             DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
             DEST_REPO = "${pipelineParams.dest_repo}"
