@@ -79,34 +79,34 @@ def call(body) {
                 }
             }
 
-            stage('Deployment') {
-                when {
-                    anyOf {
-                        branch 'dev';
-                        branch 'qa';
-                        branch 'main';
-                        branch 'master';
-                    }
-                }
-                steps {
-                    script {
-                        step([$class: "RundeckNotifier",
-                              includeRundeckLogs: true,
-                              jobId: "${RUNDECK_JOB_ID}",
-                              rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
-                              options: """
-                                  src_project_name=${SRC_PROJECT_NAME}
-                                  project_path=${PROJECT_PATH}
-                                  deployment_branch=${BRANCH_NAME}
-                                  dest_repo=${DEST_REPO}
-                                  domain_name=${DOMAIN_NAME}
-                                  """,
-                              shouldFailTheBuild: true,
-                              shouldWaitForRundeckJob: true,
-                              tailLog: true])
-                    }
-                }
-            }
+//            stage('Deployment') {
+//                when {
+//                    anyOf {
+//                        branch 'dev';
+//                        branch 'qa';
+//                        branch 'main';
+//                        branch 'master';
+//                    }
+//                }
+//                steps {
+//                    script {
+//                        step([$class: "RundeckNotifier",
+//                              includeRundeckLogs: true,
+//                              jobId: "${RUNDECK_JOB_ID}",
+//                              rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
+//                              options: """
+//                                  src_project_name=${SRC_PROJECT_NAME}
+//                                  project_path=${PROJECT_PATH}
+//                                  deployment_branch=${BRANCH_NAME}
+//                                  dest_repo=${DEST_REPO}
+//                                  domain_name=${DOMAIN_NAME}
+//                                  """,
+//                              shouldFailTheBuild: true,
+//                              shouldWaitForRundeckJob: true,
+//                              tailLog: true])
+//                    }
+//                }
+//            }
 
             stage('Post Build') {
                 steps {
