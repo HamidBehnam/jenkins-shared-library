@@ -47,9 +47,9 @@ def call(body) {
                     sh '''
                     if [ ${BRANCH_NAME} = "master" ] || [ ${BRANCH_NAME} = "main" ] || [ ${BRANCH_NAME} = "qa" ]
                     then
-                    npm run build
+                    npm run build:webpack
                     else
-                    npm run build
+                    npm run build:webpack
                     fi'''
                 }
             }
