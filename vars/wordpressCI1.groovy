@@ -123,7 +123,6 @@ def call(body) {
             DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v1_id')
-            MYSQL_ROOT_PASS = credentials('mysql_root_pass')
             SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
             DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
             DEST_REPO = "${pipelineParams.dest_repo}"
