@@ -60,7 +60,6 @@ def call(body) {
                                   deployment_branch=${BRANCH_NAME}
                                   src_repo=${SRC_REPO}
                                   theme_name=${THEME_NAME}
-                                  mysql_root_pass=${MYSQL_ROOT_PASS}
                                   """,
                               shouldFailTheBuild: true,
                               shouldWaitForRundeckJob: true,
