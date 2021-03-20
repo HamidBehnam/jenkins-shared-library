@@ -61,15 +61,22 @@ def call(body) {
                 }
             }
 
-            stage('Inject Pipeline Params') {
+            stage('Clone Pipeline Params') {
                 steps {
                     sh '''
                     ls
                     git clone --single-branch --branch ${SRC_PROJECT_NAME} https://github.com/HamidBehnam/jenkins-pipelines-params.git
                     ls
                     cd jenkins-pipelines-params/params
-                    ls
-                    load "pipelineParams.groovy"'''
+                    ls'''
+                }
+            }
+
+            stage('Inject Pipeline Params') {
+                steps {
+                    sh '''
+                    ls'''
+                    load "pipelineParams.groovy"
                 }
             }
 
