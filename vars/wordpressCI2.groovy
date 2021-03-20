@@ -33,8 +33,8 @@ def call(body) {
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
                             echo ${repo_name}
-                            env.SRC_PROJECT_NAME="$repo_name"
-                            echo ${SRC_PROJECT_NAME}
+                            ssomething=${repo_name}
+                            echo ${ssomething}
                             '''
                         }
                     }
