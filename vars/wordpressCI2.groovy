@@ -52,10 +52,10 @@ def call(body) {
                     stage('Clearing') {
                         steps {
                             sh '''
+                            rm -rf jenkins-pipelines-params
                             cd themes/${THEME_NAME}/resources
                             rm -rf node_modules
-                            rm -rf dist
-                            rm -rf jenkins-pipelines-params'''
+                            rm -rf dist'''
                         }
                     }
                 }
