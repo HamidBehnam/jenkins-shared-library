@@ -77,6 +77,9 @@ def call(body) {
                     sh '''
                     ls'''
                     load "jenkins-pipelines-params/params/pipelineParams.groovy"
+                    sh'''
+                    echo ${THE_TEXT}
+                    echo ${MY_NAME}'''
                 }
             }
 
