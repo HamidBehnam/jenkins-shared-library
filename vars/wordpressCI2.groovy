@@ -29,7 +29,9 @@ def call(body) {
                     stage('Print GIT_URL Split') {
                         steps {
                             sh '''
-                            ${GIT_URL##*/}'''
+                            repo_ref=${GIT_URL##*/}
+                            repo_name=${repo_ref%.git}
+                            echo ${repo_name}'''
                         }
                     }
 
