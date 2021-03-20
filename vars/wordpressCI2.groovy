@@ -99,7 +99,6 @@ def call(body) {
         }
         environment {
             HOME = '.'
-            DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v2_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
@@ -116,7 +115,6 @@ def call(body) {
                     script: '''
                     echo ${GIT_URL}'''
             ).trim()}"""
-            PROJECT_PATH = "${pipelineParams.project_path}"
             THEME_NAME = "${pipelineParams.theme_name}"
         }
     }
