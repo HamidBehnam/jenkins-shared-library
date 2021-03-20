@@ -41,22 +41,6 @@ def call(body) {
                         }
                     }
 
-                    stage('update the env') {
-                        steps {
-                            sh '''
-                            echo ${SRC_PROJECT_NAME}
-                            repo_ref=${GIT_URL##*/}
-                            repo_name=${repo_ref%.git}
-                            echo ${repo_name}
-                            {
-                            
-                            }'''
-                            sh '''
-                            echo "another script block"
-                            echo ${repo_name}'''
-                        }
-                    }
-
                     stage('Print Info') {
                         steps {
                             sh '''
@@ -123,13 +107,18 @@ def call(body) {
             // Using returnStdout
             CC = """${sh(
                     returnStdout: true,
-                    script: 'echo "clang"' +
-                            'echo "somethingElse"'
+                    script: '''
+                    repo_ref=${GIT_URL##*/}
+                    repo_name=${repo_ref%.git}
+                    echo ${repo_name}'''
             )}"""
             // Using returnStatus
             EXIT_STATUS = """${sh(
                     returnStatus: true,
-                    script: 'exit 1'
+                    script: '''
+                    repo_ref=${GIT_URL##*/}
+                    repo_name=${repo_ref%.git}
+                    echo ${repo_name}'''
             )}"""
         }
     }
