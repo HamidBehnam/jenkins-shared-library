@@ -76,7 +76,7 @@ def call(body) {
                 steps {
                     sh '''
                     ls'''
-                    load "pipelineParams.groovy"
+                    load "jenkins-pipelines-params/params/pipelineParams.groovy"
                 }
             }
 
