@@ -10,6 +10,8 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
+    def String repo_name;
+
     pipeline {
         agent {
             docker {
@@ -33,9 +35,9 @@ def call(body) {
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
                             echo ${repo_name}'''
-                            sh '''
+                            sh """
                             echo "another script block"
-                            echo ${repo_name}'''
+                            echo ${repo_name}"""
                         }
                     }
 
