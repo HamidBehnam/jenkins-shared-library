@@ -32,10 +32,14 @@ def call(body) {
                             echo ${SRC_PROJECT_NAME}
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
-                            echo ${repo_name}
-                            env.SRC_PROJECT_NAM="fffddd"
-                            echo ${SRC_PROJECT_NAME}
-                            '''
+                            echo ${repo_name}'''
+                        }
+                    }
+
+                    stage('Print Repo Name') {
+                        steps {
+                            sh '''
+                            echo ${repo_name}'''
                         }
                     }
 
