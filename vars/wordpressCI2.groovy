@@ -20,6 +20,12 @@ def call(body) {
         stages {
             stage('Pre Build') {
                 parallel {
+                    stage('Print Envs') {
+                        steps {
+                            sh 'printenv'
+                        }
+                    }
+
                     stage('Print Info') {
                         steps {
                             sh '''
