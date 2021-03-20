@@ -69,7 +69,7 @@ def call(body) {
                     ls
                     cd jenkins-pipelines-params/params
                     ls
-                    load "./pipelineParams.groovy"'''
+                    load "pipelineParams.groovy"'''
                 }
             }
 
