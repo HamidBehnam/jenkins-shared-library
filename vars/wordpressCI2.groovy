@@ -30,11 +30,11 @@ def call(body) {
 
                     stage('Print GIT_URL Split') {
                         steps {
-                            sh '''
+                            sh """
                             echo ${SRC_PROJECT_NAME}
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
-                            echo ${repo_name}'''
+                            echo ${repo_name}"""
                             sh """
                             echo "another script block"
                             echo ${repo_name}"""
