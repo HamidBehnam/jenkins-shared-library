@@ -54,7 +54,8 @@ def call(body) {
                             sh '''
                             cd themes/${THEME_NAME}/resources
                             rm -rf node_modules
-                            rm -rf dist'''
+                            rm -rf dist
+                            rm -rf jenkins-pipelines-params'''
                         }
                     }
                 }
