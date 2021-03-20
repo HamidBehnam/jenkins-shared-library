@@ -30,14 +30,30 @@ def call(body) {
 
                     stage('Print GIT_URL Split') {
                         steps {
-                            sh """
+                            sh '''
                             echo ${SRC_PROJECT_NAME}
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
-                            echo ${repo_name}"""
-                            sh """
+                            echo ${repo_name}'''
+                            sh '''
                             echo "another script block"
-                            echo ${repo_name}"""
+                            echo ${repo_name}'''
+                        }
+                    }
+
+                    stage('update the env') {
+                        steps {
+                            sh '''
+                            echo ${SRC_PROJECT_NAME}
+                            repo_ref=${GIT_URL##*/}
+                            repo_name=${repo_ref%.git}
+                            echo ${repo_name}
+                            {
+                            
+                            }'''
+                            sh '''
+                            echo "another script block"
+                            echo ${repo_name}'''
                         }
                     }
 
@@ -104,6 +120,16 @@ def call(body) {
             SRC_REPO = "${pipelineParams.src_repo}"
             PROJECT_PATH = "${pipelineParams.project_path}"
             THEME_NAME = "${pipelineParams.theme_name}"
+            // Using returnStdout
+            CC = """${sh(
+                    returnStdout: true,
+                    script: 'echo "clang"'
+            )}"""
+            // Using returnStatus
+            EXIT_STATUS = """${sh(
+                    returnStatus: true,
+                    script: 'exit 1'
+            )}"""
         }
     }
 }
