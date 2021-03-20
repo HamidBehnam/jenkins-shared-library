@@ -62,6 +62,12 @@ def call(body) {
                 }
             }
 
+            stage('Print Envs 2') {
+                steps {
+                    sh 'printenv'
+                }
+            }
+
             stage('Deployment') {
                 when {
                     anyOf {
