@@ -100,26 +100,16 @@ def call(body) {
             DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v2_id')
-            SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
-            SRC_REPO = "${pipelineParams.src_repo}"
-            PROJECT_PATH = "${pipelineParams.project_path}"
-            THEME_NAME = "${pipelineParams.theme_name}"
-            // Using returnStdout
-            CC = """${sh(
+            SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''
                     repo_ref=${GIT_URL##*/}
                     repo_name=${repo_ref%.git}
                     echo ${repo_name}'''
             )}"""
-            // Using returnStatus
-            EXIT_STATUS = """${sh(
-                    returnStatus: true,
-                    script: '''
-                    repo_ref=${GIT_URL##*/}
-                    repo_name=${repo_ref%.git}
-                    echo ${repo_name}'''
-            )}"""
+            SRC_REPO = "${pipelineParams.src_repo}"
+            PROJECT_PATH = "${pipelineParams.project_path}"
+            THEME_NAME = "${pipelineParams.theme_name}"
         }
     }
 }
