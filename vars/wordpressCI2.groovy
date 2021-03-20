@@ -123,7 +123,8 @@ def call(body) {
             // Using returnStdout
             CC = """${sh(
                     returnStdout: true,
-                    script: 'echo "clang"'
+                    script: 'echo "clang"' +
+                            'echo "somethingElse"'
             )}"""
             // Using returnStatus
             EXIT_STATUS = """${sh(
