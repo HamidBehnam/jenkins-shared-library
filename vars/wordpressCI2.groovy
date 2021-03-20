@@ -105,13 +105,13 @@ def call(body) {
                     script: '''
                     repo_ref=${GIT_URL##*/}
                     repo_name=${repo_ref%.git}
-                    echo ${repo_name} | xargs'''
-            )}"""
+                    echo ${repo_name}'''
+            ).trim()}"""
             SRC_REPO = """${sh(
                     returnStdout: true,
                     script: '''
-                    echo ${GIT_URL} | xargs'''
-            )}"""
+                    echo ${GIT_URL}'''
+            ).trim()}"""
             PROJECT_PATH = "${pipelineParams.project_path}"
             THEME_NAME = "${pipelineParams.theme_name}"
         }
