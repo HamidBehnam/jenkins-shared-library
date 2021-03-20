@@ -22,12 +22,6 @@ def call(body) {
         stages {
             stage('Pre Build') {
                 parallel {
-                    stage('Print Envs') {
-                        steps {
-                            sh 'printenv'
-                        }
-                    }
-
                     stage('Print Info') {
                         steps {
                             sh '''
@@ -59,12 +53,6 @@ def call(body) {
             stage('Inject Pipeline Params') {
                 steps {
                     load "${JENKINS_PIPELINES_PARAMS_PATH}"
-                }
-            }
-
-            stage('Print Envs 2') {
-                steps {
-                    sh 'printenv'
                 }
             }
 
