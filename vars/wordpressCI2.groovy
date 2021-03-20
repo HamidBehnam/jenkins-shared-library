@@ -33,12 +33,8 @@ def call(body) {
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
                             echo ${repo_name}'''
-                        }
-                    }
-
-                    stage('Print Repo Name') {
-                        steps {
                             sh '''
+                            echo "another script block"
                             echo ${repo_name}'''
                         }
                     }
