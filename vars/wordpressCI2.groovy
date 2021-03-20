@@ -29,9 +29,13 @@ def call(body) {
                     stage('Print GIT_URL Split') {
                         steps {
                             sh '''
+                            echo ${SRC_PROJECT_NAME}
                             repo_ref=${GIT_URL##*/}
                             repo_name=${repo_ref%.git}
-                            echo ${repo_name}'''
+                            echo ${repo_name}
+                            env.SRC_PROJECT_NAME=${repo_name}
+                            echo ${SRC_PROJECT_NAME}
+                            '''
                         }
                     }
 
