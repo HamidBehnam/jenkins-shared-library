@@ -28,19 +28,6 @@ def call(body) {
                         }
                     }
 
-                    stage('Print GIT_URL Split') {
-                        steps {
-                            sh '''
-                            echo ${SRC_PROJECT_NAME}
-                            repo_ref=${GIT_URL##*/}
-                            repo_name=${repo_ref%.git}
-                            echo ${repo_name}'''
-                            sh '''
-                            echo "another script block"
-                            echo ${repo_name}'''
-                        }
-                    }
-
                     stage('Print Info') {
                         steps {
                             sh '''
@@ -61,31 +48,17 @@ def call(body) {
                 }
             }
 
-            stage('Clone Pipeline Params') {
+            stage('Clone Pipeline Params Repo') {
                 steps {
                     sh '''
-                    ls
-                    git clone --single-branch --branch ${SRC_PROJECT_NAME} https://github.com/HamidBehnam/jenkins-pipelines-params.git
-                    ls
-                    cd jenkins-pipelines-params/params
+                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO}
                     ls'''
                 }
             }
 
             stage('Inject Pipeline Params') {
                 steps {
-                    sh '''
-                    ls'''
-                    load "jenkins-pipelines-params/params/pipelineParams.groovy"
-                    sh'''
-                    echo ${THE_TEXT}
-                    echo ${MY_NAME}'''
-                }
-            }
-
-            stage('Print Envs 2') {
-                steps {
-                    sh 'printenv'
+                    load "${JENKINS_PIPELINES_PARAMS_PATH}"
                 }
             }
 
@@ -129,6 +102,8 @@ def call(body) {
             DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v2_id')
+            JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
+            JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''
