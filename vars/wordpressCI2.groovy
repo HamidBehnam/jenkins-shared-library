@@ -26,6 +26,13 @@ def call(body) {
                         }
                     }
 
+                    stage('Print GIT_URL Split') {
+                        steps {
+                            sh '''
+                            ${GIT_URL##*/}'''
+                        }
+                    }
+
                     stage('Print Info') {
                         steps {
                             sh '''
