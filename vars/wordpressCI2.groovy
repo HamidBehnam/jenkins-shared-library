@@ -52,7 +52,8 @@ def call(body) {
 
             stage('Inject Pipeline Params') {
                 steps {
-                    sh '''ls'''
+                    sh '''
+                    cd jenkins-pipelines-params'''
                     load "${JENKINS_PIPELINES_PARAMS_PATH}"
                 }
             }
