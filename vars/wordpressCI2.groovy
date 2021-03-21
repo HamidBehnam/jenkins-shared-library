@@ -32,11 +32,11 @@ def call(body) {
 
                     stage('Clearing') {
                         steps {
-                            sh '''
-                            rm -rf jenkins-pipelines-params
+                            sh """
+                            rm -rf ${pipelineParamsTempDirectory}
                             cd themes/${THEME_NAME}/resources
                             rm -rf node_modules
-                            rm -rf dist'''
+                            rm -rf dist"""
                         }
                     }
                 }
@@ -54,7 +54,7 @@ def call(body) {
 
             stage('Inject Pipeline Params') {
                 steps {
-                    load "${pipelineParamsTempDirectory}/params/pipelineParams.groovy"
+                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
                 }
             }
 
