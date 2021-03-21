@@ -10,6 +10,8 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
+    def pipelineParamsTempDirectory = 'jenkins-pipelines-params-temp'
+
     pipeline {
         agent {
             docker {
@@ -42,19 +44,17 @@ def call(body) {
 
             stage('Clone Pipeline Params Repo') {
                 steps {
-                    sh '''
-                    mkdir jenkins-pipelines-params
-                    cd jenkins-pipelines-params
+                    sh """
+                    mkdir ${pipelineParamsTempDirectory}
+                    cd ${pipelineParamsTempDirectory}
                     git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
-                    ls'''
+                    ls"""
                 }
             }
 
             stage('Inject Pipeline Params') {
                 steps {
-                    sh '''
-                    cd jenkins-pipelines-params'''
-                    load "jenkins-pipelines-params/params/pipelineParams.groovy"
+                    load "${pipelineParamsTempDirectory}/params/pipelineParams.groovy"
                 }
             }
 
