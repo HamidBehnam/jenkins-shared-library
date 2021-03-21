@@ -15,6 +15,23 @@ def call(body) {
 
         }
         stages {
+            stage('Clone Pipeline Params Repo') {
+                steps {
+                    sh """
+                    rm -rf ${pipelineParamsTempDirectory}
+                    mkdir ${pipelineParamsTempDirectory}
+                    cd ${pipelineParamsTempDirectory}
+                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
+                    ls"""
+                }
+            }
+
+            stage('Inject Pipeline Params') {
+                steps {
+                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
@@ -28,29 +45,12 @@ def call(body) {
                     stage('Clearing') {
                         steps {
                             sh """
-                            rm -rf ${pipelineParamsTempDirectory}
                             cd themes/${THEME_NAME}/resources
                             rm -rf node_modules
                             rm -rf ${DEST_PROJECT_NAME}
                             rm -rf dist"""
                         }
                     }
-                }
-            }
-
-            stage('Clone Pipeline Params Repo') {
-                steps {
-                    sh """
-                    mkdir ${pipelineParamsTempDirectory}
-                    cd ${pipelineParamsTempDirectory}
-                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
-                    ls"""
-                }
-            }
-
-            stage('Inject Pipeline Params') {
-                steps {
-                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
                 }
             }
 
