@@ -5,6 +5,8 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
+    def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
+
     pipeline {
         agent {
             docker {
@@ -13,6 +15,23 @@ def call(body) {
 
         }
         stages {
+            stage('Clone Pipeline Params Repo') {
+                steps {
+                    sh """
+                    rm -rf ${pipelineParamsTempDirectory}
+                    mkdir ${pipelineParamsTempDirectory}
+                    cd ${pipelineParamsTempDirectory}
+                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
+                    ls"""
+                }
+            }
+
+            stage('Inject Pipeline Params') {
+                steps {
+                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
@@ -116,13 +135,17 @@ def call(body) {
             HOME = '.'
             GITHUB_CRED = credentials('github_cred')
             GITHUB_USER_EMAIL = credentials('github_user_email')
-            DOMAIN_NAME = credentials('domain_name')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('angular_deployment_v1_id')
-            SRC_PROJECT_NAME = "${pipelineParams.src_project_name}"
-            DEST_PROJECT_NAME = "${pipelineParams.dest_project_name}"
-            DEST_REPO = "${pipelineParams.dest_repo}"
-            PROJECT_PATH = "${pipelineParams.project_path}"
+            JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
+            JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
+            SRC_PROJECT_NAME = """${sh(
+                    returnStdout: true,
+                    script: '''
+                    repo_ref=${GIT_URL##*/}
+                    repo_name=${repo_ref%.git}
+                    echo ${repo_name}'''
+            ).trim()}"""
         }
     }
 }
