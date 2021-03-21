@@ -10,7 +10,7 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
-    def pipelineParamsTempDirectory = 'jenkins-pipelines-params-temp'
+    def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
 
     pipeline {
         agent {
