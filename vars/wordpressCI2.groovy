@@ -110,7 +110,7 @@ def call(body) {
             SRC_REPO = """${sh(
                     returnStdout: true,
                     script: '''
-                    echo ${GIT_URL}'''
+                    echo ${GIT_URL#https://}'''
             ).trim()}"""
         }
     }
