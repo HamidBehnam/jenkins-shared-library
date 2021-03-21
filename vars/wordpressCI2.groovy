@@ -54,7 +54,7 @@ def call(body) {
                 steps {
                     sh '''
                     cd jenkins-pipelines-params'''
-                    load "${JENKINS_PIPELINES_PARAMS_PATH}"
+                    load "jenkins-pipelines-params/params/pipelineParams.groovy"
                 }
             }
 
