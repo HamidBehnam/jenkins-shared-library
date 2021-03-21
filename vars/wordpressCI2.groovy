@@ -10,8 +10,6 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
-    def String repo_name;
-
     pipeline {
         agent {
             docker {
@@ -45,7 +43,9 @@ def call(body) {
             stage('Clone Pipeline Params Repo') {
                 steps {
                     sh '''
-                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO}
+                    mkdir jenkins-pipelines-params
+                    cd jenkins-pipelines-params
+                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
                     ls'''
                 }
             }
@@ -97,6 +97,7 @@ def call(body) {
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v2_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
             JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
+            THEME_NAME = "${pipelineParams.theme_name}"
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''
@@ -109,7 +110,6 @@ def call(body) {
                     script: '''
                     echo ${GIT_URL}'''
             ).trim()}"""
-            THEME_NAME = "${pipelineParams.theme_name}"
         }
     }
 }
