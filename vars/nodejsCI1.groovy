@@ -37,9 +37,11 @@ def call(body) {
                 steps {
                     withCredentials([string(credentialsId: 'domain_name', variable: 'DOMAIN_NAME_TEST_2')]) {
                         sh '''
-                        env.DOMAIN_NAME_TEST_22='fortest'
                         echo ${DOMAIN_NAME_TEST_2}
                         '''
+                        environment {
+                            DOMAIN_NAME_TEST_22='fortest'
+                        }
                     }
                 }
             }
@@ -168,7 +170,6 @@ def call(body) {
                     repo_name=${repo_ref%.git}
                     echo ${repo_name}'''
             ).trim()}"""
-            DOMAIN_NAME_TEST_22 = ''
         }
     }
 }
