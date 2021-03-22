@@ -46,11 +46,12 @@ def call(body) {
 
                     stage('Clearing') {
                         steps {
-                            sh '''
+                            sh """
                             rm -rf node_modules
                             rm -rf ${DEST_PROJECT_NAME}
+                            rm -rf ${destProjectTempDirectory}
                             rm -rf dist
-                            '''
+                            """
                         }
                     }
                 }
