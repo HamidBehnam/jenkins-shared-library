@@ -7,6 +7,7 @@ def call(body) {
 
     def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
     def destProjectTempDirectory = 'project-dest'
+    def testDomainName = ''
 
     pipeline {
         agent {
@@ -39,17 +40,27 @@ def call(body) {
                 }
             }
 
+            stage('TEST Setting the vars') {
+                steps {
+                    sh """
+                    echo ${testDomainName}
+                    ${testDomainName}='the new value'
+                    echo ${testDomainName}"""
+                }
+            }
+
             stage('TEST Envs') {
                 environment {
                     MY_DOMAIN_NAME = """${sh(
                             returnStdout: true,
                             script: '''
-                            [ -z ${DOMAIN_NAME_TEST} ] && echo ${DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST}'''
+                            [ -z ${DOMAIN_NAME} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME}'''
                     ).trim()}"""
                 }
                 steps {
-                    sh '''
-                    echo ${MY_DOMAIN_NAME}'''
+                    sh """
+                    echo ${testDomainName}
+                    echo ${MY_DOMAIN_NAME}"""
                 }
             }
 
@@ -158,6 +169,7 @@ def call(body) {
         }
         environment {
             HOME = '.'
+            DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             GITHUB_CRED = credentials('github_cred')
             GITHUB_USER_EMAIL = credentials('github_user_email')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
