@@ -45,7 +45,7 @@ def call(body) {
                             returnStdout: true,
                             script: '''
                             my_domain=${DOMAIN_NAME_TEST}
-                            [  -z "$my_domain" ] && echo "Empty: Yes" || echo "Empty: No"'''
+                            [  -z "$my_domain" ] && echo "Empty: Yes" || echo ${DOMAIN_NAME_TEST}'''
                     ).trim()}"""
                 }
                 steps {
