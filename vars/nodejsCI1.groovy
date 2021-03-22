@@ -168,6 +168,7 @@ def call(body) {
                     repo_name=${repo_ref%.git}
                     echo ${repo_name}'''
             ).trim()}"""
+            DOMAIN_NAME_TEST_22 = ''
         }
     }
 }
