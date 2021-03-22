@@ -44,7 +44,7 @@ def call(body) {
                     MY_DOMAIN_NAME = """${sh(
                             returnStdout: true,
                             script: '''
-                            my_domain=${repo_ref%.git}
+                            my_domain=${DOMAIN_NAME_TEST}
                             [  -z "$my_domain" ] && echo "Empty: Yes" || echo "Empty: No"'''
                     ).trim()}"""
                 }
