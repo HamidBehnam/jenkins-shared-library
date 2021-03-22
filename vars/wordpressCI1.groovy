@@ -103,6 +103,13 @@ def call(body) {
             }
 
             stage('Deployment') {
+                environment {
+                    TARGET_DOMAIN_NAME = """${sh(
+                            returnStdout: true,
+                            script: '''
+                            if [ ${DOMAIN_NAME} = 'default' ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
+                    ).trim()}"""
+                }
                 when {
                     anyOf {
                         branch 'dev';
@@ -118,7 +125,7 @@ def call(body) {
                               rundeckInstance: "${RUNDECK_INSTANCE_NAME}",
                               options: """
                                   src_project_name=${SRC_PROJECT_NAME}
-                                  domain_name=${DOMAIN_NAME}
+                                  domain_name=${TARGET_DOMAIN_NAME}
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
                                   src_repo=${SRC_REPO}
@@ -147,6 +154,7 @@ def call(body) {
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
             JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
             THEME_NAME = "${pipelineParams.theme_name}"
+            DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''

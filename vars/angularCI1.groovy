@@ -46,10 +46,11 @@ def call(body) {
 
                     stage('Clearing') {
                         steps {
-                            sh '''
+                            sh """
                             rm -rf node_modules
+                            rm -rf ${destProjectTempDirectory}
                             rm -rf dist
-                            '''
+                            """
                         }
                     }
                 }
@@ -101,6 +102,13 @@ def call(body) {
             }
 
             stage('Deployment') {
+                environment {
+                    TARGET_DOMAIN_NAME = """${sh(
+                            returnStdout: true,
+                            script: '''
+                            if [ ${DOMAIN_NAME} = 'default' ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
+                    ).trim()}"""
+                }
                 when {
                     anyOf {
                         branch 'dev';
@@ -119,7 +127,7 @@ def call(body) {
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
                                   dest_repo=${DEST_REPO}
-                                  domain_name=${DOMAIN_NAME}
+                                  domain_name=${TARGET_DOMAIN_NAME}
                                   """,
                               shouldFailTheBuild: true,
                               shouldWaitForRundeckJob: true,
@@ -142,6 +150,7 @@ def call(body) {
             RUNDECK_JOB_ID = credentials('angular_deployment_v1_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
             JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
+            DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''
