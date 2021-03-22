@@ -33,6 +33,12 @@ def call(body) {
                 }
             }
 
+            stage('Print Envs') {
+                steps {
+                    sh 'printenv'
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
@@ -151,6 +157,7 @@ def call(body) {
                     repo_name=${repo_ref%.git}
                     echo ${repo_name}'''
             ).trim()}"""
+            DOMAIN_NAME_TEST = "this is going to be the domain name"
         }
     }
 }
