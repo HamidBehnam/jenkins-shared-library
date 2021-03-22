@@ -33,6 +33,16 @@ def call(body) {
                 }
             }
 
+            stage('TEST Credentials') {
+                steps {
+                    withCredentials([string(credentialsId: 'domain_name', variable: 'DOMAIN_NAME_TEST_2')]) {
+                        sh '''
+                        echo ${DOMAIN_NAME_TEST_2}
+                        '''
+                    }
+                }
+            }
+
             stage('Print Envs') {
                 steps {
                     sh 'printenv'
