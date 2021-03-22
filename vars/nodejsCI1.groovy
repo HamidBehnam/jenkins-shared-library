@@ -7,7 +7,6 @@ def call(body) {
 
     def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
     def destProjectTempDirectory = 'project-dest'
-    def testDomainName = ''
 
     pipeline {
         agent {
@@ -40,26 +39,16 @@ def call(body) {
                 }
             }
 
-            stage('TEST Setting the vars') {
-                steps {
-                    sh """
-                    echo ${testDomainName}
-                    ${testDomainName}='the new value'
-                    echo ${testDomainName}"""
-                }
-            }
-
             stage('TEST Envs') {
                 environment {
                     MY_DOMAIN_NAME = """${sh(
                             returnStdout: true,
                             script: '''
-                            [ -z ${DOMAIN_NAME} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME}'''
+                            [ -z ${DOMAIN_NAME_TEST} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST}'''
                     ).trim()}"""
                 }
                 steps {
                     sh """
-                    echo ${testDomainName}
                     echo ${MY_DOMAIN_NAME}"""
                 }
             }
