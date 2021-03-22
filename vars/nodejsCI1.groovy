@@ -33,25 +33,6 @@ def call(body) {
                 }
             }
 
-            stage('TEST Credentials') {
-                steps {
-                    withCredentials([string(credentialsId: 'domain_name', variable: 'DOMAIN_NAME_TEST_2')]) {
-                        sh '''
-                        echo ${DOMAIN_NAME_TEST_2}
-                        '''
-                        environment {
-                            DOMAIN_NAME_TEST_22='fortest'
-                        }
-                    }
-                }
-            }
-
-            stage('Print Envs') {
-                steps {
-                    sh 'printenv'
-                }
-            }
-
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
