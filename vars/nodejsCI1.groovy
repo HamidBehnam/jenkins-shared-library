@@ -106,7 +106,7 @@ def call(body) {
                     MY_DOMAIN_NAME = """${sh(
                             returnStdout: true,
                             script: '''
-                            [ -z ${DOMAIN_NAME} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME}'''
+                            if [ ${DOMAIN_NAME} == "default" ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
                     ).trim()}"""
                 }
                 when {
