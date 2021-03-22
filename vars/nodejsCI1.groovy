@@ -103,7 +103,7 @@ def call(body) {
 
             stage('Deployment') {
                 environment {
-                    MY_DOMAIN_NAME = """${sh(
+                    TARGET_DOMAIN_NAME = """${sh(
                             returnStdout: true,
                             script: '''
                             if [ ${DOMAIN_NAME} = 'default' ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
@@ -118,8 +118,6 @@ def call(body) {
                     }
                 }
                 steps {
-                    sh """
-                    echo ${MY_DOMAIN_NAME}"""
                     script {
                         step([$class: "RundeckNotifier",
                               includeRundeckLogs: true,
@@ -130,7 +128,7 @@ def call(body) {
                                   project_path=${PROJECT_PATH}
                                   deployment_branch=${BRANCH_NAME}
                                   dest_repo=${DEST_REPO}
-                                  domain_name=${DOMAIN_NAME}
+                                  domain_name=${TARGET_DOMAIN_NAME}
                                   """,
                               shouldFailTheBuild: true,
                               shouldWaitForRundeckJob: true,
@@ -147,13 +145,13 @@ def call(body) {
         }
         environment {
             HOME = '.'
-            DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             GITHUB_CRED = credentials('github_cred')
             GITHUB_USER_EMAIL = credentials('github_user_email')
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('nodejs_deployment_v1_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
             JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
+            DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
                     script: '''
