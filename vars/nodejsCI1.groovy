@@ -45,7 +45,8 @@ def call(body) {
                             returnStdout: true,
                             script: '''
                             my_domain=${repo_ref%.git}
-                            echo "sdfsd"'''
+                            $MYDOMAIN="mydomain.com"
+                            [  -z "$MYDOMAIN" ] && echo "Empty: Yes" || echo "Empty: No"'''
                     ).trim()}"""
                 }
                 steps {
