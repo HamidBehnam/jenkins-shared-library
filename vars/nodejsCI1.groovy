@@ -33,6 +33,20 @@ def call(body) {
                 }
             }
 
+            stage('TEST Envs') {
+                environment {
+                    MY_DOMAIN_NAME_1 = """${sh(
+                            returnStdout: true,
+                            script: '''
+                            if [ 'defaulttt' == 'defaulttt' ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
+                    ).trim()}"""
+                }
+                steps {
+                    sh """
+                    echo ${MY_DOMAIN_NAME_1}"""
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
