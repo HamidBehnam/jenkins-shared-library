@@ -33,26 +33,6 @@ def call(body) {
                 }
             }
 
-            stage('Print Envs') {
-                steps {
-                    sh 'printenv'
-                }
-            }
-
-            stage('TEST Envs') {
-                environment {
-                    MY_DOMAIN_NAME = """${sh(
-                            returnStdout: true,
-                            script: '''
-                            [ -z ${DOMAIN_NAME_TEST_2} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST}'''
-                    ).trim()}"""
-                }
-                steps {
-                    sh """
-                    echo ${MY_DOMAIN_NAME}"""
-                }
-            }
-
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
@@ -122,6 +102,13 @@ def call(body) {
             }
 
             stage('Deployment') {
+                environment {
+                    MY_DOMAIN_NAME = """${sh(
+                            returnStdout: true,
+                            script: '''
+                            [ -z ${DOMAIN_NAME} ] && echo ${DEFAULT_DOMAIN_NAME} || echo ${DOMAIN_NAME}'''
+                    ).trim()}"""
+                }
                 when {
                     anyOf {
                         branch 'dev';
@@ -131,6 +118,8 @@ def call(body) {
                     }
                 }
                 steps {
+                    sh """
+                    echo ${MY_DOMAIN_NAME}"""
                     script {
                         step([$class: "RundeckNotifier",
                               includeRundeckLogs: true,
