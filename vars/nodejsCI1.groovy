@@ -38,7 +38,7 @@ def call(body) {
                     MY_DOMAIN_NAME_1 = """${sh(
                             returnStdout: true,
                             script: '''
-                            if [ 'defaulttt' == 'defaulttt' ]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
+                            if [[ 'defaulttt' == 'defaulttt' ]]; then echo ${DEFAULT_DOMAIN_NAME}; else echo ${DOMAIN_NAME}; fi'''
                     ).trim()}"""
                 }
                 steps {
