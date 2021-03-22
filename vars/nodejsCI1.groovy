@@ -37,6 +37,7 @@ def call(body) {
                 steps {
                     withCredentials([string(credentialsId: 'domain_name', variable: 'DOMAIN_NAME_TEST_2')]) {
                         sh '''
+                        env.DOMAIN_NAME_TEST_22=${DOMAIN_NAME_TEST_2}
                         echo ${DOMAIN_NAME_TEST_2}
                         '''
                     }
