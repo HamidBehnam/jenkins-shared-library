@@ -108,6 +108,9 @@ def call(body) {
             }
 
             stage('Deployment') {
+                environment {
+                    MY_DOMAIN_NAME = ${DOMAIN_NAME_TEST_2} || ${DOMAIN_NAME}
+                }
                 when {
                     anyOf {
                         branch 'dev';
@@ -117,6 +120,8 @@ def call(body) {
                     }
                 }
                 steps {
+                    sh """
+                    echo ${MY_DOMAIN_NAME}"""
                     script {
                         step([$class: "RundeckNotifier",
                               includeRundeckLogs: true,
@@ -157,7 +162,6 @@ def call(body) {
                     repo_name=${repo_ref%.git}
                     echo ${repo_name}'''
             ).trim()}"""
-            DOMAIN_NAME_TEST_2 = "this is going to be the domain name"
         }
     }
 }
