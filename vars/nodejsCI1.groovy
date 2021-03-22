@@ -45,7 +45,7 @@ def call(body) {
                             returnStdout: true,
                             script: '''
                             my_domain=${repo_ref%.git}
-                            [[ -z ${DOMAIN_NAME_TEST_2} ]] && echo ${DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST_2}'''
+                            echo "sdfsd"'''
                     ).trim()}"""
                 }
                 steps {
