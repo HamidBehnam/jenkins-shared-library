@@ -39,6 +39,21 @@ def call(body) {
                 }
             }
 
+            stage('TEST Envs') {
+                environment {
+                    MY_DOMAIN_NAME = """${sh(
+                            returnStdout: true,
+                            script: '''
+                            my_domain=${repo_ref%.git}
+                            [[ -z ${DOMAIN_NAME_TEST_2} ]] && echo ${DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST_2}'''
+                    ).trim()}"""
+                }
+                steps {
+                    sh '''
+                    echo ${MY_DOMAIN_NAME}'''
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
@@ -108,14 +123,6 @@ def call(body) {
             }
 
             stage('Deployment') {
-                environment {
-                    MY_DOMAIN_NAME = """${sh(
-                            returnStdout: true,
-                            script: '''
-                            my_domain=${repo_ref%.git}
-                            [[ -z ${DOMAIN_NAME_TEST_2} ]] && echo ${DOMAIN_NAME} || echo ${DOMAIN_NAME_TEST_2}'''
-                    ).trim()}"""
-                }
                 when {
                     anyOf {
                         branch 'dev';
@@ -125,8 +132,6 @@ def call(body) {
                     }
                 }
                 steps {
-                    sh """
-                    echo ${MY_DOMAIN_NAME}"""
                     script {
                         step([$class: "RundeckNotifier",
                               includeRundeckLogs: true,
