@@ -37,6 +37,12 @@ def call(body) {
                 }
             }
 
+            stage('Print Envs') {
+                steps {
+                    sh 'printenv'
+                }
+            }
+
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
