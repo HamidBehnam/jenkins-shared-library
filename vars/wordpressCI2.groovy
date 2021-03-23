@@ -10,6 +10,7 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
+    def agentName = 'wordpressCI2'
     def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
 
     pipeline {
@@ -26,14 +27,14 @@ def call(body) {
                     rm -rf ${pipelineParamsTempDirectory}
                     mkdir ${pipelineParamsTempDirectory}
                     cd ${pipelineParamsTempDirectory}
-                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
+                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
                     ls"""
                 }
             }
 
             stage('Inject Pipeline Params') {
                 steps {
-                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
+                    load "${pipelineParamsTempDirectory}/${agentName}/hamidev-wordpress-5717-src.groovy"
                 }
             }
 
@@ -111,7 +112,6 @@ def call(body) {
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('wordpress_deployment_v2_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
-            JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
             THEME_NAME = "${pipelineParams.theme_name}"
             DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             SRC_PROJECT_NAME = """${sh(
