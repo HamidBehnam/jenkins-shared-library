@@ -34,7 +34,7 @@ def call(body) {
 
             stage('Inject Pipeline Params') {
                 steps {
-                    load "${pipelineParamsTempDirectory}/${agentName}/hamidev-wordpress-6852-src.groovy"
+                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
                 }
             }
 
