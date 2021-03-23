@@ -5,6 +5,7 @@ def call(body) {
     body.delegate = pipelineParams
     body()
 
+    def agentName = 'angularCI1'
     def pipelineParamsTempDirectory = 'jenkins-pipelines-params'
     def destProjectTempDirectory = 'project-dest'
 
@@ -22,14 +23,14 @@ def call(body) {
                     rm -rf ${pipelineParamsTempDirectory}
                     mkdir ${pipelineParamsTempDirectory}
                     cd ${pipelineParamsTempDirectory}
-                    git clone --single-branch --branch ${SRC_PROJECT_NAME} ${JENKINS_PIPELINES_PARAMS_REPO} .
+                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
                     ls"""
                 }
             }
 
             stage('Inject Pipeline Params') {
                 steps {
-                    load "${pipelineParamsTempDirectory}/${JENKINS_PIPELINES_PARAMS_PATH}"
+                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
                 }
             }
 
@@ -149,7 +150,6 @@ def call(body) {
             RUNDECK_INSTANCE_NAME = credentials('rundeck_instance_name')
             RUNDECK_JOB_ID = credentials('angular_deployment_v1_id')
             JENKINS_PIPELINES_PARAMS_REPO = credentials('jenkins_pipelines_params_repo')
-            JENKINS_PIPELINES_PARAMS_PATH = credentials('jenkins_pipelines_params_path')
             DEFAULT_DOMAIN_NAME = credentials('default_domain_name')
             SRC_PROJECT_NAME = """${sh(
                     returnStdout: true,
