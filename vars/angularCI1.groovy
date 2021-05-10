@@ -91,7 +91,7 @@ def call(body) {
                     cd ${destProjectTempDirectory}
                     #make sure the repository does have the related branch. you might need to manually create all the branches needed for the jenkins like dev, qa.
                     git clone --single-branch --branch ${BRANCH_NAME} https://${DEST_REPO} .
-                    rm *
+                    rm -rf *
                     cp -a ../${SRC_PROJECT_NAME}/. .
                     git config user.name "${GITHUB_CRED_USR}"
                     git config user.email "${GITHUB_USER_EMAIL}"
