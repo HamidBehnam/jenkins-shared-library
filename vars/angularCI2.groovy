@@ -80,7 +80,10 @@ def call(body) {
 
             stage('Unit Tests') {
                 steps {
-                    sh 'npm run test:ci'
+                    sh '''
+                    npm install --save-dev puppeteer
+                    npm run test:ci
+                    '''
                 }
             }
 
