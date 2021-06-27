@@ -78,6 +78,12 @@ def call(body) {
                 }
             }
 
+            stage('Unit Tests') {
+                steps {
+                    sh 'npm run test:ci'
+                }
+            }
+
             stage('Push to Dest Repo') {
                 when {
                     anyOf {
