@@ -81,8 +81,8 @@ def call(body) {
             stage('Unit Tests') {
                 steps {
                     sh '''
-                    sudo apt-get update
-                    sudo apt-get install -y libgbm-dev
+                    apt-get update
+                    apt-get install -y libgbm-dev
                     npm run test:ci
                     '''
                 }
