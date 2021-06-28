@@ -79,6 +79,12 @@ def call(body) {
             }
 
             stage('Unit Tests') {
+                agent {
+                    docker {
+                        image 'buildkite/puppeteer'
+                    }
+                }
+
                 steps {
                     sh '''
                     rm -rf node_modules
