@@ -17,66 +17,66 @@ def call(body) {
 
         }
         stages {
-            stage('Clone Pipeline Params Repo') {
-                steps {
-                    sh """
-                    rm -rf ${pipelineParamsTempDirectory}
-                    mkdir ${pipelineParamsTempDirectory}
-                    cd ${pipelineParamsTempDirectory}
-                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
-                    ls"""
-                }
-            }
-
-            stage('Inject Pipeline Params') {
-                steps {
-                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
-                }
-            }
-
-            stage('Pre Build') {
-                parallel {
-                    stage('Print Info') {
-                        steps {
-                            sh '''
-                            node --version
-                            ls
-                            '''
-                        }
-                    }
-
-                    stage('Clearing') {
-                        steps {
-                            sh """
-                            rm -rf node_modules
-                            rm -rf ${destProjectTempDirectory}
-                            rm -rf dist
-                            """
-                        }
-                    }
-                }
-            }
-
-            stage('Dependencies Installation') {
-                steps {
-                    sh 'npm install'
-                }
-            }
-
-            stage('Build') {
-                steps {
-                    sh '''
-                    if [ ${BRANCH_NAME} = "master" ]
-                    then
-                    npm run build -- --configuration=production --base-href /${PROJECT_PATH}
-                    elif [ ${BRANCH_NAME} = "qa" ]
-                    then
-                    npm run build -- --configuration=qa --base-href /${PROJECT_PATH}
-                    else
-                    npm run build -- --configuration=dev --base-href /${PROJECT_PATH}
-                    fi'''
-                }
-            }
+//            stage('Clone Pipeline Params Repo') {
+//                steps {
+//                    sh """
+//                    rm -rf ${pipelineParamsTempDirectory}
+//                    mkdir ${pipelineParamsTempDirectory}
+//                    cd ${pipelineParamsTempDirectory}
+//                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
+//                    ls"""
+//                }
+//            }
+//
+//            stage('Inject Pipeline Params') {
+//                steps {
+//                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
+//                }
+//            }
+//
+//            stage('Pre Build') {
+//                parallel {
+//                    stage('Print Info') {
+//                        steps {
+//                            sh '''
+//                            node --version
+//                            ls
+//                            '''
+//                        }
+//                    }
+//
+//                    stage('Clearing') {
+//                        steps {
+//                            sh """
+//                            rm -rf node_modules
+//                            rm -rf ${destProjectTempDirectory}
+//                            rm -rf dist
+//                            """
+//                        }
+//                    }
+//                }
+//            }
+//
+//            stage('Dependencies Installation') {
+//                steps {
+//                    sh 'npm install'
+//                }
+//            }
+//
+//            stage('Build') {
+//                steps {
+//                    sh '''
+//                    if [ ${BRANCH_NAME} = "master" ]
+//                    then
+//                    npm run build -- --configuration=production --base-href /${PROJECT_PATH}
+//                    elif [ ${BRANCH_NAME} = "qa" ]
+//                    then
+//                    npm run build -- --configuration=qa --base-href /${PROJECT_PATH}
+//                    else
+//                    npm run build -- --configuration=dev --base-href /${PROJECT_PATH}
+//                    fi'''
+//                }
+//            }
 
             stage('Unit Tests') {
                 steps {
