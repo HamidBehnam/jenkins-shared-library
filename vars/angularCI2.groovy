@@ -12,7 +12,7 @@ def call(body) {
     pipeline {
         agent {
             docker {
-                image 'node:16.3.0'
+                image 'node'
             }
 
         }
