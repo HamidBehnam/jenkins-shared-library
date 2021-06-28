@@ -12,50 +12,50 @@ def call(body) {
     pipeline {
         agent {
             docker {
-                image 'node'
+                image 'node:16.3.0'
             }
 
         }
         stages {
-//            stage('Clone Pipeline Params Repo') {
-//                steps {
-//                    sh """
-//                    rm -rf ${pipelineParamsTempDirectory}
-//                    mkdir ${pipelineParamsTempDirectory}
-//                    cd ${pipelineParamsTempDirectory}
-//                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
-//                    ls"""
-//                }
-//            }
-//
-//            stage('Inject Pipeline Params') {
-//                steps {
-//                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
-//                }
-//            }
-//
-//            stage('Pre Build') {
-//                parallel {
-//                    stage('Print Info') {
-//                        steps {
-//                            sh '''
-//                            node --version
-//                            ls
-//                            '''
-//                        }
-//                    }
-//
-//                    stage('Clearing') {
-//                        steps {
-//                            sh """
-//                            rm -rf node_modules
-//                            rm -rf ${destProjectTempDirectory}
-//                            rm -rf dist
-//                            """
-//                        }
-//                    }
-//                }
-//            }
+            stage('Clone Pipeline Params Repo') {
+                steps {
+                    sh """
+                    rm -rf ${pipelineParamsTempDirectory}
+                    mkdir ${pipelineParamsTempDirectory}
+                    cd ${pipelineParamsTempDirectory}
+                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
+                    ls"""
+                }
+            }
+
+            stage('Inject Pipeline Params') {
+                steps {
+                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
+                }
+            }
+
+            stage('Pre Build') {
+                parallel {
+                    stage('Print Info') {
+                        steps {
+                            sh '''
+                            node --version
+                            ls
+                            '''
+                        }
+                    }
+
+                    stage('Clearing') {
+                        steps {
+                            sh """
+                            rm -rf node_modules
+                            rm -rf ${destProjectTempDirectory}
+                            rm -rf dist
+                            """
+                        }
+                    }
+                }
+            }
 //
 //            stage('Dependencies Installation') {
 //                steps {
