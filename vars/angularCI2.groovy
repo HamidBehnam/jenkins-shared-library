@@ -81,7 +81,7 @@ def call(body) {
             stage('Unit Tests') {
                 steps {
                     sh '''
-                    apt-get update
+                    sudo apt-get update
                     npm run test:ci
                     '''
                 }
