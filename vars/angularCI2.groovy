@@ -83,7 +83,7 @@ def call(body) {
                     sh '''
                     rm -rf node_modules
                     npm install
-                    npm run ng test -- --watch=false
+                    npm run test:ci
                     '''
                 }
             }
