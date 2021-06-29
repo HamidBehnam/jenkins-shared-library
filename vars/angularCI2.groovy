@@ -81,7 +81,8 @@ def call(body) {
             stage('Unit Tests') {
                 steps {
                     sh '''
-                    sudo apt-get update
+                    cd /usr/lib/node_modules/puppeteer
+                    ls
                     npm run test:ci
                     '''
                 }
