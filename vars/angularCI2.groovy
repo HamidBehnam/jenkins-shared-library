@@ -81,8 +81,7 @@ def call(body) {
             stage('Unit Tests') {
                 steps {
                     sh '''
-                    rm -rf node_modules
-                    npm install
+                    apt-get update
                     npm run test:ci
                     '''
                 }
