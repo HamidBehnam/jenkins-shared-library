@@ -12,6 +12,11 @@ def call(body) {
     pipeline {
         agent any
         stages {
+            agent {
+                docker {
+                    image 'node'
+                }
+            }
 //            stage('Clone Pipeline Params Repo') {
 //                steps {
 //                    sh """
