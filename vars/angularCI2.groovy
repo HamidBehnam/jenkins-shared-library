@@ -79,9 +79,13 @@ def call(body) {
 //            }
 
             stage('Unit Tests') {
+                agent {
+                    dockerfile true
+                }
                 steps {
                     sh '''
-                    echo "this is for test"
+                    echo Unit Testing stage
+                    echo myCustomEnvVar = $myCustomEnvVar
                     '''
                 }
             }
