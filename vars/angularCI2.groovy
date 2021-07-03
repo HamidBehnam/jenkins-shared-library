@@ -10,7 +10,7 @@ def call(body) {
     def destProjectTempDirectory = 'project-dest'
 
     pipeline {
-        agent none
+        agent any
         stages {
 //            stage('Clone Pipeline Params Repo') {
 //                steps {
