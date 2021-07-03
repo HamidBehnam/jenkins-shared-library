@@ -30,41 +30,12 @@ def call(body) {
             }
 
             stage('Pre Build') {
-                parallel {
-                    stage('Print Info') {
-                        agent {
-                            docker {
-                                image 'node'
-                            }
-                        }
-                        steps {
-                            sh '''
-                            node --version
-                            ls
-                            '''
-                        }
-                    }
-
-                    stage('Clearing') {
-                        steps {
-                            sh """
-                            rm -rf node_modules
-                            rm -rf ${destProjectTempDirectory}
-                            rm -rf dist
-                            """
-                        }
-                    }
-                }
-            }
-
-            stage('Dependencies Installation') {
-                agent {
-                    docker {
-                        image 'node'
-                    }
-                }
                 steps {
-                    sh 'npm install'
+                    sh """
+                    rm -rf node_modules
+                    rm -rf ${destProjectTempDirectory}
+                    rm -rf dist
+                    """
                 }
             }
 
@@ -76,6 +47,8 @@ def call(body) {
                 }
                 steps {
                     sh '''
+                    node --version
+                    npm install
                     if [ ${BRANCH_NAME} = "master" ]
                     then
                     npm run build -- --configuration=production --base-href /${PROJECT_PATH}
