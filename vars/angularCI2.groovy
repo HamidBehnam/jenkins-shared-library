@@ -12,7 +12,7 @@ def call(body) {
     pipeline {
         agent {
             docker {
-                image 'hamidbehnam' + '/' + 'docker-sample-img-001'
+                image 'node'
             }
 
         }
@@ -79,6 +79,11 @@ def call(body) {
 //            }
 
             stage('Unit Tests') {
+                agent {
+                    docker {
+                        image 'hamidbehnam' + '/' + 'docker-sample-img-001'
+                    }
+                }
                 steps {
                     sh '''
                     echo Unit Testing stage
