@@ -12,7 +12,9 @@ def call(body) {
     pipeline {
         agent {
             docker {
-                image 'hamidbehnam:docker-sample-img-001'
+                image 'hamidbehnam\n' +
+                        '/\n' +
+                        'docker-sample-img-001'
             }
 
         }
