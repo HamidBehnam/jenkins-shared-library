@@ -11,7 +11,10 @@ def call(body) {
 
     pipeline {
         agent {
-            dockerfile true
+            docker {
+                image 'hamidbehnam\\docker-sample-img-001'
+            }
+
         }
         stages {
 //            stage('Clone Pipeline Params Repo') {
