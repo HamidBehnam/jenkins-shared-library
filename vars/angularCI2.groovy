@@ -56,36 +56,25 @@ def call(body) {
                     }
                 }
             }
-//
-//            stage('Dependencies Installation') {
-//                steps {
-//                    sh 'npm install'
-//                }
-//            }
-//
-//            stage('Build') {
-//                steps {
-//                    sh '''
-//                    if [ ${BRANCH_NAME} = "master" ]
-//                    then
-//                    npm run build -- --configuration=production --base-href /${PROJECT_PATH}
-//                    elif [ ${BRANCH_NAME} = "qa" ]
-//                    then
-//                    npm run build -- --configuration=qa --base-href /${PROJECT_PATH}
-//                    else
-//                    npm run build -- --configuration=dev --base-href /${PROJECT_PATH}
-//                    fi'''
-//                }
-//            }
 
-            stage('Unit Tests') {
+            stage('Dependencies Installation') {
+                steps {
+                    sh 'npm install'
+                }
+            }
+
+            stage('Build') {
                 steps {
                     sh '''
-                    rm -rf node_modules
-                    npm install
-                    npm rebuild puppeteer
-                    npm run test:ci
-                    '''
+                    if [ ${BRANCH_NAME} = "master" ]
+                    then
+                    npm run build -- --configuration=production --base-href /${PROJECT_PATH}
+                    elif [ ${BRANCH_NAME} = "qa" ]
+                    then
+                    npm run build -- --configuration=qa --base-href /${PROJECT_PATH}
+                    else
+                    npm run build -- --configuration=dev --base-href /${PROJECT_PATH}
+                    fi'''
                 }
             }
 
