@@ -30,13 +30,13 @@ def call(body) {
 //            }
 
             stage('Pre Build') {
-                agent {
-                    docker {
-                        image 'node'
-                    }
-                }
                 parallel {
                     stage('Print Info') {
+                        agent {
+                            docker {
+                                image 'node'
+                            }
+                        }
                         steps {
                             sh '''
                             node --version
