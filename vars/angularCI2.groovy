@@ -11,28 +11,25 @@ def call(body) {
 
     pipeline {
         agent {
-            docker {
-                image 'node'
-            }
-
+            dockerfile true
         }
         stages {
-            stage('Clone Pipeline Params Repo') {
-                steps {
-                    sh """
-                    rm -rf ${pipelineParamsTempDirectory}
-                    mkdir ${pipelineParamsTempDirectory}
-                    cd ${pipelineParamsTempDirectory}
-                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
-                    ls"""
-                }
-            }
-
-            stage('Inject Pipeline Params') {
-                steps {
-                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
-                }
-            }
+//            stage('Clone Pipeline Params Repo') {
+//                steps {
+//                    sh """
+//                    rm -rf ${pipelineParamsTempDirectory}
+//                    mkdir ${pipelineParamsTempDirectory}
+//                    cd ${pipelineParamsTempDirectory}
+//                    git clone --single-branch --branch master ${JENKINS_PIPELINES_PARAMS_REPO} .
+//                    ls"""
+//                }
+//            }
+//
+//            stage('Inject Pipeline Params') {
+//                steps {
+//                    load "${pipelineParamsTempDirectory}/${agentName}/${SRC_PROJECT_NAME}.groovy"
+//                }
+//            }
 
 //            stage('Pre Build') {
 //                parallel {
@@ -79,9 +76,6 @@ def call(body) {
 //            }
 
             stage('Unit Tests') {
-                agent {
-                    dockerfile true
-                }
                 steps {
                     sh '''
                     echo Unit Testing stage
@@ -152,11 +146,11 @@ def call(body) {
 //                }
 //            }
 
-            stage('Post Build') {
-                steps {
-                    cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true, cleanupMatrixParent: true)
-                }
-            }
+//            stage('Post Build') {
+//                steps {
+//                    cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true, cleanupMatrixParent: true)
+//                }
+//            }
         }
         environment {
             HOME = '.'
