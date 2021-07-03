@@ -12,11 +12,6 @@ def call(body) {
     pipeline {
         agent any
         stages {
-            agent {
-                docker {
-                    image 'node'
-                }
-            }
 //            stage('Clone Pipeline Params Repo') {
 //                steps {
 //                    sh """
@@ -34,28 +29,33 @@ def call(body) {
 //                }
 //            }
 
-//            stage('Pre Build') {
-//                parallel {
-//                    stage('Print Info') {
-//                        steps {
-//                            sh '''
-//                            node --version
-//                            ls
-//                            '''
-//                        }
-//                    }
-//
-//                    stage('Clearing') {
-//                        steps {
-//                            sh """
-//                            rm -rf node_modules
-//                            rm -rf ${destProjectTempDirectory}
-//                            rm -rf dist
-//                            """
-//                        }
-//                    }
-//                }
-//            }
+            stage('Pre Build') {
+                agent {
+                    docker {
+                        image 'node'
+                    }
+                }
+                parallel {
+                    stage('Print Info') {
+                        steps {
+                            sh '''
+                            node --version
+                            ls
+                            '''
+                        }
+                    }
+
+                    stage('Clearing') {
+                        steps {
+                            sh """
+                            rm -rf node_modules
+                            rm -rf ${destProjectTempDirectory}
+                            rm -rf dist
+                            """
+                        }
+                    }
+                }
+            }
 //
 //            stage('Dependencies Installation') {
 //                steps {
