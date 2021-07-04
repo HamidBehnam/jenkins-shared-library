@@ -79,6 +79,14 @@ def call(body) {
                 }
             }
 
+            stage('Unit Tests Main') {
+                steps {
+                    sh '''
+                    npm run test:ci
+                    '''
+                }
+            }
+
             stage('Unit Tests') {
                 agent {
                     docker {
