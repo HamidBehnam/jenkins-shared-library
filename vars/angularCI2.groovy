@@ -10,7 +10,12 @@ def call(body) {
     def destProjectTempDirectory = 'project-dest'
 
     pipeline {
-        agent any
+        agent {
+            docker {
+                reuseNode true
+                image 'node'
+            }
+        }
         stages {
             stage('Clone Pipeline Params Repo') {
                 steps {
@@ -32,12 +37,6 @@ def call(body) {
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
-                        agent {
-                            docker {
-                                reuseNode true
-                                image 'node'
-                            }
-                        }
                         steps {
                             sh '''
                             node --version
@@ -79,24 +78,10 @@ def call(body) {
                 }
             }
 
-            stage('Unit Tests Main') {
+            stage('Unit Tests') {
                 steps {
                     sh '''
                     npm run test:ci
-                    '''
-                }
-            }
-
-            stage('Unit Tests') {
-                agent {
-                    docker {
-                        image 'hamidbehnam' + '/' + 'docker-sample-img-001'
-                    }
-                }
-                steps {
-                    sh '''
-                    echo Unit Testing stage
-                    echo myCustomEnvVar = $myCustomEnvVar
                     '''
                 }
             }
