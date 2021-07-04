@@ -85,8 +85,8 @@ def call(body) {
                 }
                 steps {
                     sh """
-                    cd dist
                     ls
+                    cd dist
                     mkdir ${destProjectTempDirectory}
                     cd ${destProjectTempDirectory}
                     #make sure the repository does have the related branch. you might need to manually create all the branches needed for the jenkins like dev, qa.
