@@ -10,12 +10,7 @@ def call(body) {
     def destProjectTempDirectory = 'project-dest'
 
     pipeline {
-        agent {
-            docker {
-                reuseNode true
-                image 'node'
-            }
-        }
+        agent any
         stages {
             stage('Clone Pipeline Params Repo') {
                 steps {
@@ -37,6 +32,12 @@ def call(body) {
             stage('Pre Build') {
                 parallel {
                     stage('Print Info') {
+                        agent {
+                            docker {
+                                reuseNode true
+                                image 'node'
+                            }
+                        }
                         steps {
                             sh '''
                             node --version
