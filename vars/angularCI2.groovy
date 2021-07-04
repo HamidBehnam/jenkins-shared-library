@@ -30,25 +30,43 @@ def call(body) {
             }
 
             stage('Pre Build') {
+                parallel {
+                    stage('Print Info') {
+                        agent {
+                            docker {
+                                reuseNode true
+                                image 'node'
+                            }
+                        }
+                        steps {
+                            sh '''
+                            node --version
+                            ls
+                            '''
+                        }
+                    }
+
+                    stage('Clearing') {
+                        steps {
+                            sh """
+                            rm -rf node_modules
+                            rm -rf ${destProjectTempDirectory}
+                            rm -rf dist
+                            """
+                        }
+                    }
+                }
+            }
+
+            stage('Dependencies Installation') {
                 steps {
-                    sh """
-                    rm -rf node_modules
-                    rm -rf ${destProjectTempDirectory}
-                    rm -rf dist
-                    """
+                    sh 'npm install'
                 }
             }
 
             stage('Build') {
-                agent {
-                    docker {
-                        image 'node'
-                    }
-                }
                 steps {
                     sh '''
-                    node --version
-                    npm install
                     if [ ${BRANCH_NAME} = "master" ]
                     then
                     npm run build -- --configuration=production --base-href /${PROJECT_PATH}
@@ -85,8 +103,8 @@ def call(body) {
                 }
                 steps {
                     sh """
-                    ls
                     cd dist
+                    ls
                     mkdir ${destProjectTempDirectory}
                     cd ${destProjectTempDirectory}
                     #make sure the repository does have the related branch. you might need to manually create all the branches needed for the jenkins like dev, qa.
